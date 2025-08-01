@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>A Question for You</title>
+    <style>
+        :root {
+            --primary-color: #0D0D0D;
+            --secondary-color: #1A1A1A;
+            --accent-color: #FF4D4D;
+            --text-color: #E0E0E0;
+            --glow-color: rgba(255, 77, 77, 0.8);
+            --font-family-headings: 'Playfair Display', serif;
+            --font-family-body: 'Lato', sans-serif;
+        }
+
+        @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Lato:wght@300;400&display=swap');
+
+        body {
+            background-color: var(--primary-color);
+            color: var(--text-color);
+            font-family: var(--font-family-body);
+            margin: 0;
+            padding: 0;
+            overflow-x: hidden;
+            scroll-behavior: smooth;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 960px;
+            margin: 0 auto;
+            padding: 100px 0;
+        }
+
+        h1, h2 {
+            font-family: var(--font-family-headings);
+            text-align: center;
+            margin-bottom: 2rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out, transform 1s ease-out;
+        }
+
+        h1 {
+            font-size: 4rem;
+            color: var(--accent-color);
+            text-shadow: 0 0 15px var(--glow-color);
+        }
+
+        h2 {
+            font-size: 2.5rem;
+        }
+
+        p {
+            font-size: 1.2rem;
+            line-height: 1.8;
+            text-align: center;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out 0.5s, transform 1s ease-out 0.5s;
+        }
+
+        .scroll-section {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .visible h1, .visible h2, .visible p {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .interactive-section {
+            text-align: center;
+            padding: 150px 0;
+        }
+
+        .button-container {
+            margin-top: 4rem;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 1s ease-out 1s, transform 1s ease-out 1s;
+        }
+
+        .visible .button-container {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .proposal-button {
+            background-color: transparent;
+            border: 2px solid var(--accent-color);
+            color: var(--accent-color);
+            padding: 1rem 2rem;
+            font-size: 1.2rem;
+            font-family: var(--font-family-headings);
+            cursor: pointer;
+            transition: background-color 0.3s ease, color 0.3s ease, box-shadow 0.3s ease;
+            margin: 0 1rem;
+            text-decoration: none;
+        }
+
+        .proposal-button:hover {
+            background-color: var(--accent-color);
+            color: var(--primary-color);
+            box-shadow: 0 0 20px var(--glow-color);
+        }
+
+        .final-message {
+            display: none;
+            text-align: center;
+            animation: fadeIn 2s ease-in-out;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+
+        /* Organic shape background */
+        body::before {
+            content: '';
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: radial-gradient(circle at center, rgba(255, 77, 77, 0.1), transparent 40%);
+            animation: rotate 60s linear infinite;
+            z-index: -1;
+        }
+
+        @keyframes rotate {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+
+    </style>
+</head>
+<body>
+
+    <section id="intro" class="scroll-section">
+        <div class="container">
+            <h1>Our Story</h1>
+            <p>It started with a simple hello, but little did I know, it was the beginning of everything.</p>
+        </div>
+    </section>
+
+    <section id="memories" class="scroll-section">
+        <div class="container">
+            <h2>Remember When...</h2>
+            <p>We laughed until we cried, explored new places, and created a universe of our own inside jokes.</p>
+        </div>
+    </section>
+
+    <section id="dreams" class="scroll-section">
+        <div class="container">
+            <h2>Looking Ahead</h2>
+            <p>I see a future filled with more adventures, more laughter, and a love that continues to grow.</p>
+        </div>
+    </section>
+
+    <section id="proposal" class="scroll-section interactive-section">
+        <div class="container">
+            <h2>A Question for You</h2>
+            <p>You are my today and all of my tomorrows. The one I want to share my life with. [10]</p>
+            <div class="button-container">
+                <a href="#" class="proposal-button" onclick="showFinalMessage()">Yes</a>
+                <a href="#" class="proposal-button" onclick="showFinalMessage()">Of Course!</a>
+            </div>
+            <div id="finalMessage" class="final-message">
+                <h2>I love you.</h2>
+                <p>Let's start forever.</p>
+            </div>
+        </div>
+    </section>
+
+    <script>
+        const scrollSections = document.querySelectorAll('.scroll-section');
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('visible');
+                }
+            });
+        }, { threshold: 0.5 });
+
+        scrollSections.forEach(section => {
+            scrollObserver.observe(section);
+        });
+
+        function showFinalMessage() {
+            event.preventDefault();
+            const buttonContainer = document.querySelector('.button-container');
+            const finalMessage = document.getElementById('finalMessage');
+            buttonContainer.style.display = 'none';
+            finalMessage.style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
